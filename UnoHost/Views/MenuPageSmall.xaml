@@ -1,0 +1,108 @@
+﻿<Page
+    x:Class="DMXCore.DMXCore100.Views.MenuPageSmall"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DMXCore.DMXCore100.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:viewmodels="using:DMXCore.DMXCore100.ViewModels" 
+    xmlns:models="using:DMXCore.DMXCore100.Models" 
+    xmlns:mux="using:Microsoft.UI.Xaml.Controls"
+    xmlns:um="using:Uno.Material"
+    xmlns:utu="using:Uno.Toolkit.UI"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    d:DataContext="{d:DesignInstance Type=viewmodels:MenuSmallViewModel}"
+    mc:Ignorable="d"
+	NavigationCacheMode="Required"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <SolidColorBrush x:Key="ExpanderHeaderBackground" Color="#202020" />
+        <SolidColorBrush x:Key="ExpanderChevronForeground" Color="White"/>
+        <SolidColorBrush x:Key="ExpanderChevronPointerOverForeground" Color="Gray"/>
+        <SolidColorBrush x:Key="ExpanderChevronBorderBrush" Color="Gray"/>
+        <SolidColorBrush x:Key="ExpanderChevronBorderPointerOverBrush" Color="Gray"/>
+        <SolidColorBrush x:Key="ExpanderChevronBorderPressedBrush" Color="Gray"/>
+        <SolidColorBrush x:Key="ExpanderChevronPressedForeground" Color="Gray"/>
+        <Thickness x:Key="ExpanderChevronBorderThickness">2</Thickness>
+
+        <DataTemplate x:Key="MenuItemGridViewTemplate">
+            <utu:CardContentControl Width="120" MinWidth="120" Height="110" MinHeight="110" Margin="1,3,0,3"
+                Style="{StaticResource DmxCoreOutlinedCardContentControlStyle}" IsTabStop="False" BorderBrush="Black" BorderThickness="2"
+                Tapped="Card_Tapped" Holding="Card_Holding" RightTapped="Card_RightTapped">
+                <utu:CardContentControl.ContentTemplate>
+                    <DataTemplate x:DataType="models:MenuItem">
+                        <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="{x:Bind Name,Mode=OneWay}" Style="{StaticResource HeadlineMedium}" />
+                    </DataTemplate>
+                </utu:CardContentControl.ContentTemplate>
+            </utu:CardContentControl>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Visibility="{x:Bind ViewModel.MainVisibility, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <mux:Expander HorizontalAlignment="Stretch" MinHeight="39" BackgroundSizing="OuterBorderEdge" CornerRadius="0" Padding="0" x:Name="TopExpander" Visibility="{x:Bind ViewModel.HasTopExpander, Converter={StaticResource BooleanToVisibilityConverter}}" IsExpanded="{x:Bind ViewModel.IsExpanded}">
+            <Expander.Header>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Background="#202020" Padding="4">
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="20" Text="{x:Bind ViewModel.Title}"/>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#D0D0D0" FontSize="16" Text="{x:Bind ViewModel.SubTitle}" Visibility="{x:Bind ViewModel.SubTitleVisibility}"/>
+                </StackPanel>
+            </Expander.Header>
+            <Expander.Content>
+                <ContentControl Content="{x:Bind ViewModel.ExpanderUserControl}"/>
+            </Expander.Content>
+        </mux:Expander>
+
+        <Border Background="#202020" MinHeight="39" Padding="4" Visibility="{x:Bind ViewModel.HasTopExpanderInverseVisibility}">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="20" Text="{x:Bind ViewModel.Title}"/>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#D0D0D0" FontSize="16" Text="{x:Bind ViewModel.SubTitle}" Visibility="{x:Bind ViewModel.SubTitleVisibility}"/>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1" Width="800" MinHeight="389" BorderBrush="#808080" BorderThickness="0,1,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.Background>
+                <ImageBrush ImageSource="{x:Bind ViewModel.BackgroundImagePath}"
+                    Stretch="None"
+                    AlignmentX="Center"
+                    AlignmentY="Top" />
+            </Grid.Background>
+            <Image Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top" Height="{x:Bind ViewModel.LogoHeight}" Source="{x:Bind ViewModel.Logo}" Margin="0,4,0,0" Visibility="{x:Bind ViewModel.Logo, Converter={StaticResource StringToVisibilityConverter}}" />
+            <ListView Grid.Row="1" Name="ListContainer" ItemsSource="{x:Bind ViewModel.MenuItems}"
+                  Padding="8" Margin="20,0,0,0"
+                  ItemTemplate="{StaticResource MenuItemGridViewTemplate}"
+                  SelectionMode="None"
+                  HorizontalAlignment="Stretch">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="FocusVisualPrimaryBrush" Value="{StaticResource MyFocusVisualPrimaryBrush}"/>
+                        <Setter Property="FocusVisualSecondaryBrush" Value="{StaticResource MyFocusVisualSecondaryBrush}"/>
+                        <Setter Property="FocusVisualPrimaryThickness" Value="3" />
+                        <Setter Property="FocusVisualSecondaryThickness" Value="1" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <controls:WrapPanel VerticalSpacing="2" HorizontalSpacing="2" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ListView>
+        </Grid>
+
+        <local:FooterControl Grid.Row="2" x:Name="Footer" Height="50">
+            <local:FooterControl.BackButtonIcon>
+                <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE845;" FontSize="26"/>
+            </local:FooterControl.BackButtonIcon>
+        </local:FooterControl>
+    </Grid>
+</Page>

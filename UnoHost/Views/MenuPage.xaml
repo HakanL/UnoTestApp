@@ -1,0 +1,100 @@
+﻿<Page
+    x:Class="DMXCore.DMXCore100.Views.MenuPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DMXCore.DMXCore100.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:viewmodels="using:DMXCore.DMXCore100.ViewModels" 
+    xmlns:models="using:DMXCore.DMXCore100.Models" 
+    xmlns:mux="using:Microsoft.UI.Xaml.Controls"
+    xmlns:um="using:Uno.Material"
+    xmlns:utu="using:Uno.Toolkit.UI"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    d:DataContext="{d:DesignInstance Type=viewmodels:MenuViewModel}"
+    mc:Ignorable="d"
+	NavigationCacheMode="Required"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <SolidColorBrush x:Key="ExpanderHeaderBackground" Color="#202020" />
+        <SolidColorBrush x:Key="ExpanderChevronForeground" Color="White"/>
+        <SolidColorBrush x:Key="ExpanderChevronPointerOverForeground" Color="Gray"/>
+        <SolidColorBrush x:Key="ExpanderChevronBorderBrush" Color="Gray"/>
+        <SolidColorBrush x:Key="ExpanderChevronBorderPointerOverBrush" Color="Gray"/>
+        <SolidColorBrush x:Key="ExpanderChevronBorderPressedBrush" Color="Gray"/>
+        <SolidColorBrush x:Key="ExpanderChevronPressedForeground" Color="Gray"/>
+        <Thickness x:Key="ExpanderChevronBorderThickness">2</Thickness>
+
+        <DataTemplate x:Key="MenuItemGridViewTemplate" x:DataType="models:MenuItem">
+            <utu:Card HeaderContent="{x:Bind Name, Mode=OneWay}" Width="344" Margin="1,3,0,3"
+                SubHeaderContent="{x:Bind Description, Mode=OneWay}"
+                AvatarContent="{x:Bind FullIconPath}"
+                Style="{StaticResource DmxCoreCardStyle}" IsTabStop="True" BorderBrush="Black" BorderThickness="2"
+                Tapped="Card_Tapped" Holding="Card_Holding" RightTapped="Card_RightTapped" AvatarContentTemplate="{StaticResource AvatarContentTemplateFixed40x40}">
+            </utu:Card>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Visibility="{x:Bind ViewModel.MainVisibility, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <mux:Expander HorizontalAlignment="Stretch" MinHeight="39" BackgroundSizing="OuterBorderEdge" CornerRadius="0" Padding="0" x:Name="TopExpander" Visibility="{x:Bind ViewModel.HasTopExpanderVisibility}" IsExpanded="{x:Bind ViewModel.IsExpanded}">
+            <Expander.Header>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Background="#202020" Padding="4">
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="20" Text="{x:Bind ViewModel.Title}"/>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#D0D0D0" FontSize="16" Text="{x:Bind ViewModel.SubTitle}" Visibility="{x:Bind ViewModel.SubTitleVisibility}"/>
+                </StackPanel>
+            </Expander.Header>
+            <Expander.Content>
+                <ContentControl Content="{x:Bind ViewModel.ExpanderUserControl}"/>
+            </Expander.Content>
+        </mux:Expander>
+
+        <Border Background="#202020" MinHeight="39" Padding="4" Visibility="{x:Bind ViewModel.HasTopExpanderInverseVisibility}">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="20" Text="{x:Bind ViewModel.Title}"/>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#D0D0D0" FontSize="16" Text="{x:Bind ViewModel.SubTitle}" Visibility="{x:Bind ViewModel.SubTitleVisibility}"/>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1" Width="800" MinHeight="389" BorderBrush="#808080" BorderThickness="0,1,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.Background>
+                <ImageBrush ImageSource="{x:Bind ViewModel.BackgroundImagePath}"
+                    Stretch="None"
+                    AlignmentX="Center"
+                    AlignmentY="Top" />
+            </Grid.Background>
+            <Image Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top" Height="{x:Bind ViewModel.LogoHeight}" Source="{x:Bind ViewModel.Logo}" Visibility="{x:Bind ViewModel.LogoVisibility}" />
+
+            <ScrollViewer Grid.Row="1" HorizontalScrollMode="Disabled" VerticalScrollBarVisibility="Auto" x:Name="RepeaterScrollViewer" Padding="2">
+                <Grid Background="Transparent">
+                    <ItemsRepeater Grid.Row="1" Name="ListContainer" ItemsSource="{x:Bind ViewModel.MenuItems}" Margin="30,3,0,0"
+                      ItemTemplate="{StaticResource MenuItemGridViewTemplate}" HorizontalAlignment="Stretch">
+                        <ItemsRepeater.Layout>
+                            <UniformGridLayout MaximumRowsOrColumns="2"
+                               Orientation="Horizontal"
+                               ItemsJustification="Start"
+                               MinColumnSpacing="30"
+                               MinRowSpacing="3" />
+                        </ItemsRepeater.Layout>
+                    </ItemsRepeater>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+
+        <local:FooterControl Grid.Row="2" x:Name="Footer" Height="50">
+            <local:FooterControl.BackButtonIcon>
+                <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE845;" FontSize="26"/>
+            </local:FooterControl.BackButtonIcon>
+        </local:FooterControl>
+    </Grid>
+</Page>

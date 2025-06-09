@@ -1,0 +1,63 @@
+<UserControl
+    x:Class="DMXCore.DMXCore100.Views.FooterControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DMXCore.DMXCore100.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:conv="using:DMXCore.DMXCore100"
+    mc:Ignorable="d"
+    d:DesignHeight="800"
+    d:DesignWidth="400"
+    Name="footerControl">
+
+    <UserControl.Resources>
+        <conv:ThemeBasedUriConverter x:Key="ThemeBasedUriConverter" />
+    </UserControl.Resources>
+
+    <Grid Background="{Binding BackgroundBrush}" Height="50" BorderThickness="0,1,0,0" BorderBrush="#808080">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="0" Name="ReturnButton" Tag="RETURN" Style="{StaticResource DmxCoreButton}" Margin="0,0,0,0" Background="Transparent" Padding="0" VerticalAlignment="Stretch" CornerRadius="0" Width="70" Command="{Binding BackCommand}" Content="{x:Bind BackButtonIcon}" Visibility="{Binding BackButtonVisibility, FallbackValue=Visible, TargetNullValue=Visible}" />
+        <Button Grid.Column="1" Name="AdminLogonButton" Margin="4,0,0,0" Background="Transparent" Style="{StaticResource DmxCoreButton}" Padding="0" VerticalAlignment="Stretch" CornerRadius="0" Width="50" Command="{Binding AdminCommand}" IsTabStop="False" Visibility="{Binding LoginVisibility, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
+            <StackPanel>
+                <Image Width="28" Height="28" Source="ms-appx:///Assets/Icons/userred28x28.png" Visibility="{Binding AdminButtonVisibility, FallbackValue=Collapsed, TargetNullValue=Collapsed}" />
+                <Image Width="28" Height="28" Source="ms-appx:///Assets/Icons/userwhite28x28.png" Visibility="{Binding UserButtonVisibility, FallbackValue=Collapsed, TargetNullValue=Collapsed}" />
+                <Image Width="28" Height="28" Source="ms-appx:///Assets/Icons/loggedout28x28.png" Visibility="{Binding LoggedOutButtonVisibility, FallbackValue=Collapsed, TargetNullValue=Collapsed}" />
+            </StackPanel>
+        </Button>
+        <StackPanel Grid.Column="2" Orientation="Horizontal">
+            <Button Name="UpdateButton" Margin="8,0,8,0" Background="Transparent" Padding="0" VerticalAlignment="Stretch" CornerRadius="0" Width="50" Command="{Binding UpdateCommand}" IsTabStop="False" Visibility="{Binding UpdateAvailableVisibility, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
+                <SymbolIcon Symbol="Sync" Foreground="White" />
+            </Button>
+            <TextBlock Margin="8,0,8,0" Text="{Binding InfoLabel1}" VerticalAlignment="Center" Foreground="{Binding InfoLabel1Brush}" FontSize="16" Visibility="{Binding InfoLabel1Visibility, FallbackValue=Collapsed, TargetNullValue=Collapsed}" />
+        </StackPanel>
+        <TextBlock Grid.Column="3" Margin="8,0,8,0" Text="{Binding InfoLabel2}" VerticalAlignment="Center" Foreground="Gray" FontSize="16" Visibility="{Binding InfoLabel2Visibility, FallbackValue=Collapsed, TargetNullValue=Collapsed}" />
+        <Grid Grid.Column="4" Margin="8,0,8,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding Status}" VerticalAlignment="Center" Foreground="{Binding StatusBrush}" FontSize="20" FontWeight="Bold" Margin="0,0,8,0" />
+            <ContentControl Grid.Column="1" Content="{Binding AdditionalContent, ElementName=footerControl}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
+        </Grid>
+        <FontIcon Grid.Column="5" Margin="0,0,12,0" Glyph="&#xE759;" Visibility="{Binding PluginConnectedVisibility, FallbackValue=Collapsed, TargetNullValue=Collapsed}" FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="24" Foreground="{Binding PluginConnectedBrush}" />
+        <Button Grid.Column="6" Margin="0,0,4,0" Background="Transparent" Padding="0" Style="{StaticResource DmxCoreButton}" VerticalAlignment="Stretch" CornerRadius="0" Width="30" Command="{Binding OutputCommand}" IsTabStop="False">
+            <FontIcon Glyph="{Binding OutputGlyph}" Visibility="{Binding OutputActiveVisibility, FallbackValue=Collapsed, TargetNullValue=Collapsed}" FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="24" Foreground="{Binding OutputActiveBrush}" />
+        </Button>
+        <FontIcon Grid.Column="6" Margin="0,0,12,0" Glyph="&#xE8AF;" Visibility="{Binding RemoteConnectedVisibility, FallbackValue=Collapsed, TargetNullValue=Collapsed}" FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="24" Foreground="{Binding RemoteConnectedBrush}" />
+        <Button Grid.Column="7" Name="LockButton" Margin="0,0,0,0" Background="Transparent" Padding="0" Style="{StaticResource DmxCoreButton}" VerticalAlignment="Stretch" CornerRadius="0" Width="30" Command="{Binding LockCommand}" IsTabStop="False" Visibility="{Binding LockVisibility, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
+            <Image Width="19" Height="28" Source="ms-appx:///Assets/Icons/lock19x28.png" />
+        </Button>
+        <Button Grid.Column="8" Margin="0,0,8,0" Padding="0" CornerRadius="0" Background="Transparent" Style="{StaticResource DmxCoreButton}" Content="{Binding CurrentTime}" VerticalAlignment="Center" Foreground="White" FontSize="20" Holding="Clock_Holding" RightTapped="Clock_RightTapped" />
+    </Grid>
+</UserControl>

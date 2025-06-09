@@ -1,0 +1,121 @@
+﻿<Project Sdk="Uno.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0-desktop</TargetFramework>
+    <RuntimeIdentifiers>win-x64;linux-arm64</RuntimeIdentifiers>
+    <Nullable>annotations</Nullable>
+    <OutputType>Exe</OutputType>
+    <UnoSingleProject>true</UnoSingleProject>
+
+    <!-- Display name -->
+    <ApplicationTitle>DMX Core 100</ApplicationTitle>
+    <!-- App Identifier -->
+    <ApplicationId>com.dmxcore.100</ApplicationId>
+    <!-- Versions -->
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
+    <!--
+      If you encounter this error message:
+
+        error NETSDK1148: A referenced assembly was compiled using a newer version of Microsoft.Windows.SDK.NET.dll.
+        Please update to a newer .NET SDK in order to reference this assembly.
+
+      This means that the two packages below must be aligned with the "build" version number of
+      the "Microsoft.Windows.SDK.BuildTools" package above, and the "revision" version number
+      must be the highest found in https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref.
+    -->
+    <WindowsSdkPackageVersion>10.0.26100.57</WindowsSdkPackageVersion> 
+
+    <!--
+      UnoFeatures let's you quickly add and manage implicit package references based on the features you want to use.
+      https://aka.platform.uno/singleproject-features
+    -->
+    <UnoFeatures>
+      Material;
+      Hosting;
+      Toolkit;
+      Logging;
+      LoggingSerilog;
+      SkiaRenderer;
+      Mvvm;
+      Configuration;
+      Navigation;
+      ThemeService;
+    </UnoFeatures>
+    <AssemblyName>DMXCore100</AssemblyName>
+    <RootNamespace>DMXCore.DMXCore100.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+
+    <!--<PublishAot>true</PublishAot>-->
+    
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <UnoXamlResourcesTrimming>true</UnoXamlResourcesTrimming>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <UnoSupportedLanguage Include="en-US" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.26100|AnyCPU'">
+    <NoWarn>$(NoWarn);NU1507;NETSDK1201;PRI257;VSTHRD200</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-desktop|AnyCPU'">
+    <NoWarn>$(NoWarn);NU1507;NETSDK1201;PRI257;VSTHRD200</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.26100|AnyCPU'">
+    <NoWarn>$(NoWarn);NU1507;NETSDK1201;PRI257;VSTHRD200</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-desktop|AnyCPU'">
+    <NoWarn>$(NoWarn);NU1507;NETSDK1201;PRI257;VSTHRD200</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" />
+    <PackageReference Include="Uno.Toolkit.WinUI" />
+    <PackageReference Include="Uno.Toolkit.Skia.WinUI" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" />
+  </ItemGroup>
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'windows'">
+    <PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+  </ItemGroup>
+
+  <!--	<ItemGroup>
+		<UnoDspImportColors Include="Styles\*.zip" Generator="Xaml" />
+		<UnoImage Include="Assets\**\*.svg" />
+		<EmbeddedResource Include="appsettings.json" />
+		<EmbeddedResource Include="appsettings.*.json" DependentUpon="appsettings.json" />
+		<UpToDateCheckInput Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
+	</ItemGroup>-->
+
+  <ItemGroup>
+    <UnoDspImportColors Include="Styles\*.json" Generator="Xaml" />
+  </ItemGroup>
+
+  <Choose>
+    <When Condition="'$(TargetFramework)'=='net9.0-ios'">
+    </When>
+    <When Condition="'$(TargetFramework)'=='net9.0-android'">
+    </When>
+    <When Condition="'$(TargetFramework)'=='net9.0-maccatalyst'">
+    </When>
+    <When Condition="'$(TargetFramework)'=='net9.0-windows10.0.26100'">
+    </When>
+    <When Condition="'$(TargetFramework)'=='net9.0-desktop'">
+    </When>
+    <When Condition="'$(TargetFramework)'=='net9.0-browserwasm'">
+    </When>
+  </Choose>
+
+  <ItemGroup>
+    <Content Include="runtimes\linux-arm64\**\*" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
+</Project>
