@@ -33,7 +33,7 @@ public class MenuManager : IMenuManager
         {
             Name = "Presets",
             Description = "Display all presets",
-            IsChildrenAvailable = async () => { await Task.Delay(200); return true; },  // Simulate reading from DB
+            IsChildrenAvailable = () => Task.FromResult(true),
             GetChildren = () => GetPresets(navigator, menuItems),
             Icon = "presets40x40.png"
         };
@@ -43,7 +43,7 @@ public class MenuManager : IMenuManager
         {
             Name = "Effects",
             Description = "Apply built-in effects",
-            IsChildrenAvailable = async () => { await Task.Delay(200); return true; },  // Simulate reading from DB
+            IsChildrenAvailable = () => Task.FromResult(true),
             GetChildren = () => GetEffects(navigator, menuItems),
             Icon = "patterns40x40.png"
         };
@@ -53,7 +53,7 @@ public class MenuManager : IMenuManager
         {
             Name = "Cues",
             Description = "Display all cues",
-            IsChildrenAvailable = async () => { await Task.Delay(200); return true; },  // Simulate reading from DB
+            IsChildrenAvailable = () => Task.FromResult(true),
             GetChildren = () => GetCues(navigator, menuItems),
             Icon = "cues40x40.png"
         };
@@ -63,7 +63,7 @@ public class MenuManager : IMenuManager
         {
             Name = "Sounds",
             Description = "Display all sounds",
-            IsChildrenAvailable = async () => { await Task.Delay(200); return true; },  // Simulate reading from DB
+            IsChildrenAvailable = () => Task.FromResult(true),
             GetChildren = () => GetSounds(navigator, menuItems),
             Icon = "sounds40x40.png"
         };
