@@ -15,6 +15,7 @@ public sealed partial class MenuPage : Page, IFocusableItemsProvider, ICanSetFoc
     private readonly ILogger log;
     private readonly Services.IMenuFocusManager menuFocusManager;
     private readonly Stopwatch renderDuration = new Stopwatch();
+    private object previousDataContext;
 
     public MenuViewModel? ViewModel => DataContext as MenuViewModel;
 
@@ -31,6 +32,16 @@ public sealed partial class MenuPage : Page, IFocusableItemsProvider, ICanSetFoc
         DataContextChanged += (s, e) =>
         {
             this.log.LogTrace("Data context assigned = {DC}, with id {InvocationId}", DataContext?.GetType().Name, (DataContext as BaseViewModel)?.InvokationId);
+
+            if (e.NewValue == null && previousDataContext != null)
+            {
+                DataContext = this.previousDataContext;
+            }
+
+            if (e.NewValue is MenuViewModel)
+            {
+                this.previousDataContext = e.NewValue;
+            }
 
             this.renderDuration.Restart();
         };
