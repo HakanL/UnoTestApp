@@ -46,6 +46,11 @@ public class AboutViewModel : BaseViewModel, IItemSelector
         list.Add(new AboutItem("Network Address", () => "127.0.0.1/8"));
         list.Add(new AboutItem("Gateway", () => "127.0.0.1"));
 
+        for (int i = 0; i < 40; i++)
+        {
+            list.Add(new AboutItem($"Test {i + 1}", $"Test value {i + 1}"));
+        }
+
         AboutItems = list;
 
         this.scheduler.Schedule(TimeSpan.FromMilliseconds(100), RefreshSettings);
